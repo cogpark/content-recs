@@ -63,7 +63,7 @@ class TitleEvalutor:
         if  title_matches['total'] < 1:
             title_matches['assessment'] = 'This title is unique among Mass.gov page titles.'
         elif title_matches['total'] >= 1:
-            title_matches['assessment'] = "There are other pages with titles like this on Mass.gov. Use a phrase that summarizes the purpose of the page as succinctly as possible using words your audience will know."
+            title_matches['assessment'] = "Use a phrase that summarizes the purpose of the page using words your audience will know."
 
         title_matches['title_matches'] = similar_titles
         return title_matches

@@ -39,7 +39,6 @@ function updateAssessment(data){
         putDataHere.appendChild(acronym)
     }
 
-
     putDataHere.appendChild(titleMatches)
 
     if (data['title_matches']['total'] > 0) {

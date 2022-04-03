@@ -1,2 +1,2 @@
 venv*
-https://github.com/cogpark/content-recs
+__pycache__*
