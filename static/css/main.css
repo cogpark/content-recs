@@ -1,0 +1,114 @@
+/* grain: #efe9e7; lighter: #f7f1ef;
+    blackboard: #565656;
+   oxblood:#76323f;
+    white ffffff
+   green: #23ce6b;
+   link: contrast #14558f
+   linky orange: #de541e;
+   code: 340068
+    */
+
+
+.bg {
+    background-color: #f7f1ef;
+}
+
+.layout {
+    background-color: #C4B9AB;
+    width: 100%;
+}
+
+.col.logo {
+    background-image: url("/static/images/coffeering150.png");
+    background-position: center;
+    height: 200px;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 50px;
+}
+
+nav .col {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+#content {
+    background-color: #C4B9AB;
+    min-height: 700px;
+}
+
+nav, footer {
+    height: 200px;
+}
+
+.nav-menu {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.post-container {
+    background-color: #ffffff;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 25px;
+    border-radius: 12px;
+    border-color: #76323f;
+    max-width: 900px;
+}
+
+.post-container-title {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 12px;
+    max-width: 900px;
+}
+
+blockquote {
+    background-color:#565656;
+    padding: 15px;
+    border: 1px solid #f7f1ef;
+
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid gray;
+    max-width: 100%;
+}
+
+.dataframe tr:nth-child(even) {background-color: #f2f2f2;}
+
+.dataframe tr:nth-child(odd) {background-color: #fff;}
+
+table.dataframe {
+    border: 1px solid #ddd;
+    table-layout: fixed;
+}
+
+div.df-container {overflow-x: scroll;}
+
+.dataframe td, .dataframe th, table td {
+    color: #565656;
+    font-family: courier;
+    border: 1px solid gray;
+    padding: 8px;
+}
+
+.dataframe tr {
+    border: 1px solid gray;
+}
+
+.add-on {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}

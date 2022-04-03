@@ -1,0 +1,47 @@
+/* grain: #efe9e7; lighter: #f7f1ef;
+    blackboard: #565656;
+   oxblood:#76323f;
+    white ffffff
+   green: #23ce6b;
+   link: contrast #14558f
+   linky orange: #de541e;
+   code: 340068
+    */
+
+/* Header text styles */
+
+h1, h2, h3, h4, h3 a {
+    font-family: 'Oswald', sans-serif;
+    color: #76323f;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+h1 {text-transform: uppercase;}
+
+p,li,label {
+    font-family: 'Cabin', sans-serif;
+    color: #565656;
+    margin: 0px;
+    font-size: 18px;
+ }
+
+
+a {
+    color: #007991;
+}
+
+a:hover {
+    color: #565656;
+    font-style: normal;
+}
+
+blockquote p {
+    color: #f7f1ef;
+}
+
+.prettyprint.add-on p,
+.prettyprint.add-on li {
+    font-family: Consolas, Monaco, 'Lucida Console','Courier New', Courier, monospace;
+    font-size: 16px;
+}

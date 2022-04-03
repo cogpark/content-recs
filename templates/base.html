@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <meta name="author" content="Adam Cogbill & Marino Fernandes">
+        <meta name="description" content="A tool for evaluating gov't web content.">
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/typography.css') }}">
+        <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Cabin&display=swap" rel="stylesheet">
+        <script type='text/javascript' src="{{ url_for('static', filename='js/handle_submit.js') }}" ></script>
+
+    </head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg">
+        <div class='container'>
+            <div class='row'> 
+                <div class='col'>
+                </div>
+                <div class='col'>
+                    <a href='/'>This would be a menu item 1</a>
+                </div>
+                <div class='col'>
+                    <a href='/'>Item 2</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class='layout'>
+        <div class='container' id="content">
+            <div class='row'>
+                <div class='col'>
+                    {% block content %}
+                    <p>Default Content</p>
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="navbar bg">
+        <div class='container'>
+            <p style="margin-left:auto; margin-right: auto;">Content recommendations   |    © 2022 Adam Cogbill & Marino Fernandes. All rights reserved. </p>
+        </div> 
+    </footer>
+</body>
+
+</html>
