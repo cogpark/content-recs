@@ -105,6 +105,7 @@ class TitleEvalutor:
         return acronym_check
 
     # from GSBS: noun stacking, trouble words, conjunction count > 2, noun/adjective pairs
+    # check if title includes an org name
 
         
 
