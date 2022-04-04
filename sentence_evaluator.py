@@ -149,49 +149,56 @@ class SentenceEvaluator:
 
         Returns a list whose first entry is the the score and second the number of trouble words/phrases found.
         """
+        trouble_words = {}
         sentence = sentence.lower()
         points = 2
         score = 0
-            
-        score = score + points if 'rules and regulation' in sentence else score
-        if print_reasons:
-            print(f'Score after looking for "rules and regulation": {score}')
         
-        score = score + points if 'necessary and required' in sentence else score
-        if print_reasons:
-            print(f'Score after looking for "necessary and required": {score}')
+        look_for_these_phrases = ['rules and regulation', 'necessary and required','details and information','in your possession' ]
 
-        score = score + points if 'details and information' in sentence else score
-        if print_reasons:
-            print(f'Score after looking for "details and information": {score}')
+        for phrase in look_for_these_phrases:
 
-        score = score + points if 'in your possession' in sentence else score
-        if print_reasons:
-            print(f'Score after looking for "in your possession": {score}')
+            if phrase in sentence:
+                score = score + points 
+                trouble_words[f'{phrase}'] = True
+            if print_reasons:
+                print(f'Score after looking for "{phrase}": {score}')
+
+        # these are special cases 
 
         if re.search('(have|has) the (capacity|capability|ability)', sentence):
+            match = re.search('(have|has) the (capacity|capability|ability)', sentence)
             score = score + points
+            # This gets us the phrase that the regex search caught
+            trouble_words[f'{sentence[match.span()[0]: match.span()[1]]}']  = True
         if print_reasons:
             print(f'Score after looking for "have the ability/capacity/capability": {score}')
         
         if re.search('utiliz', sentence):
+            match = re.search('utiliz', sentence)
             score = score + points 
+            trouble_words[f'{sentence[match.span()[0]: match.span()[1]]}'] = True
         if print_reasons:
             print(f'Score after looking for "utilize (and variants)": {score}')
+
         # "manage* and operat*"
         if re.search('(manage[a-z]*) and (operat[a-z]*)', sentence):
+            match = re.search('(manage[a-z]*) and (operat[a-z]*)', sentence)
             score = score + points
+            trouble_words[f'{sentence[match.span()[0]: match.span()[1]]}'] = True
         if print_reasons:
             print(f'Score after looking for "manage and operate": {score}')
 
         if re.search('(across|throughout) the commonwealth', sentence):
+            match = re.search('(across|throughout) the commonwealth', sentence)
             score = score + points
+            trouble_words[f'{sentence[match.span()[0]: match.span()[1]]}'] = True
         if print_reasons:
             print(f'Score after looking for "across the commonwealth": {score}')
 
-        issues_found = score / 2 if score > 0 else 0
+        trouble_words['score'] = score
 
-        return [score, issues_found]
+        return trouble_words
 
     def count_prepositional_phrases(self, sentence, print_reasons=False):
         """
@@ -251,34 +258,43 @@ class SentenceEvaluator:
 
         return [score, len(pp_indexes)]
 
-    def count_conjunctions(self, sentence, print_reasons=False):
+    def count_conjunctions(self, sentence, print_reasons=False, is_title=False):
         """
         Counts how many conjunctions are in a sentence. Scores
-        it 5 if there are 4 or more, else 0.
+        it 5 if there are 4 or more, else 0. If we're evaluating a title, scores 5 if there are
+        2 or more, else 0
 
         Returns a list whose first entry is the the score and second the number of conjunctions.
         """
+        conjunctions = {}
+        conj_list = []
+
         sentence = sentence.lower()
         score = 0
-        cc_count = 0
         
         identify_pos = pos_tag(sentence.split())
         
         for i in range(len(identify_pos)):
             # print(identify_pos[i])
             if identify_pos[i][1] == 'CC':
-                cc_count = cc_count + 1
+                conj_list.append(identify_pos[i][0])
                 if print_reasons:
-                    print(f'Found a conjunction: {identify_pos[i][0]}')
+                    print(f'Found a conjunction: {identify_pos[i][0]}')     
         
-        
-        cc_count = cc_count + sentence.count("as well as")
-        if print_reasons:
-            print(f'Found {sentence.count("as well as")} instances of "as well as"')
+        if "as well as" in sentence:
+            conj_list.append("as well as")
+            if print_reasons:
+                print(f'Found {sentence.count("as well as")} instances of "as well as"')
 
-        score = 5 if cc_count >= 4 else 0
+        if is_title is True:
+            score = 5 if len(conj_list) >= 2 else 0
+        else:
+            score = 5 if len(conj_list) >= 4 else 0
 
-        return [score, cc_count]
+        conjunctions['score'] = score
+        conjunctions['conjunctions'] = conj_list
+
+        return conjunctions
 
     def noun_adj_pairs(self, sentence, print_reasons=False):
         """

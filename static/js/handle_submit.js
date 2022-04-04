@@ -31,12 +31,15 @@ function updateAssessment(data){
     titleMatches.innerHTML = `<span>Found ${data['title_matches']['total']} pages with similar names. ${data['title_matches']['assessment']}</span><br/>`
 
     putDataHere.appendChild(pageTitle)
+    putDataHere.appendChild(document.createElement('HR'))
     putDataHere.appendChild(titleLength)
+    putDataHere.appendChild(document.createElement('HR'))
     
     if (data['acronym_checker']['acronym_checker'] > 0) {
         let acronym = document.createElement("P");
         acronym.innerHTML =  `<span>${data['acronym_checker']['assessment']}</span><br/>`
         putDataHere.appendChild(acronym)
+        putDataHere.appendChild(document.createElement('HR'))
     }
 
     putDataHere.appendChild(titleMatches)
@@ -47,8 +50,8 @@ function updateAssessment(data){
         for (var key in data['title_matches']['title_matches']) {
             let similar_title = document.createElement("LI");
             similar_title.innerHTML = key
-            similar_titles_list.appendChild(similar_title)
+            similar_titles_list.appendChild(similar_title)           
         }
-
     }
+    putDataHere.appendChild(document.createElement('HR'))
 }

@@ -8,7 +8,7 @@ class TitleEvalutor:
     def __init__(self): 
         self.titles_df = pd.read_csv('titles_urls.csv', usecols=['node_id', 'title','is_published','node_path'])
         self.sample_df = self.titles_df[0:5000]
-        #self.evaluator = SentenceEvaluator()
+        self.se = SentenceEvaluator()
         return
 
     def evaluator(self, title):
@@ -18,6 +18,8 @@ class TitleEvalutor:
         evaluation['title_length'] = self.check_title_length(title)
         evaluation['title_matches'] = self.get_title_matches(title)
         evaluation['acronym_checker'] = self.acronym_checker(title)
+        evaluation['trouble_words'] = self.se.get_trouble_words(title)
+        evaluation['conjunctions'] = self.se.count_conjunctions(title, is_title=True)
 
         return evaluation
 
@@ -107,6 +109,7 @@ class TitleEvalutor:
     # from GSBS: noun stacking, trouble words, conjunction count > 2, noun/adjective pairs
     # check if title includes an org name
 
+
         
 
 
@@ -114,4 +117,7 @@ class TitleEvalutor:
 if __name__ == "__main__":
     tf = TitleEvalutor()
     
-    tf.get_title_matches(title="Natural Gas Industry")
+    x = tf.evaluator("you and me and us make three as well as")
+    print(x)
+
+    
