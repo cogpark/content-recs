@@ -54,4 +54,10 @@ function updateAssessment(data){
         }
     }
     putDataHere.appendChild(document.createElement('HR'))
+
+    if (data['trouble_words']['score'] > 0 ) {
+        let trouble_words = document.createElement('P');
+    }
+
+
 }

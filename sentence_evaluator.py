@@ -401,12 +401,12 @@ class SentenceEvaluator:
         many nouns in a row. Scores 2 if it finds 1 stack of nouns, 
         4 if it contains more than 1 stack, else 0.
 
-        Returns a list whose first entry is the the score and second the number of "stacked nouns".
         """
 
         fingerprint = ''
         
         identify_pos = pos_tag(sentence.split())
+        print(identify_pos)
         for i in range(len(identify_pos)):
            
             if identify_pos[i][1] in ['NN', 'NNP', 'NNS', 'VBG', 'VBN']:
