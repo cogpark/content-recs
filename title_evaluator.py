@@ -56,6 +56,9 @@ class TitleEvalutor:
         for item in titles_list:
             if fuzz.ratio(title,item) > 75:
                 similar_titles[item] = fuzz.ratio(title.lower(), item.lower())
+                # This incredibly confusing line looks up the page path based on the title in the titles dataframe and assigns it to the similar titles dictionary under the key "title" + "_path." 
+                similar_titles[item + '_path'] = 'www.mass.gov' + self.titles_df[self.titles_df['title'] == item]['node_path'].item()
+                
         
         #TODO Labor Market Information Statistics showed up once but then not again on subsequent searches for "labor market information" (the score is 81, and we changed the threshold from 70 to 75)
         #TODO maybe add stem match
