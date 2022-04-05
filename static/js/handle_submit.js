@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 )})
 
 async function getRecs(url) {
+    url = url.replaceAll("/","|")
+    console.log(url)
     let response = await fetch(`/api/content-recs/${url}`)
     let data = response.json();
     return data 
@@ -61,3 +63,17 @@ function updateAssessment(data){
 
 
 }
+
+/*
+(function() {
+  var h, a, f;
+  a = document.getElementsByTagName('link');
+  for (h = 0; h < a.length; h++) {
+    f = a[h];
+    if (f.rel.toLowerCase().match(/stylesheet/) && f.href) {
+      var g = f.href.replace(/(&|\?)rnd=\d+/, '');
+      f.href = g + (g.match(/\?/) ? '&' : '?');
+      f.href += 'rnd=' + (new Date().valueOf());
+    }
+  } // for
+})() */

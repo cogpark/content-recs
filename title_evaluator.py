@@ -7,7 +7,8 @@ class TitleEvalutor:
 
     def __init__(self): 
         self.titles_df = pd.read_csv('titles_urls.csv', usecols=['node_id', 'title','is_published','node_path'])
-        self.sample_df = self.titles_df[0:5000]
+        print(f'Dataset size: {self.titles_df.shape}')
+        # self.sample_df = self.titles_df[0:5000]
         self.se = SentenceEvaluator()
         return
 
@@ -108,8 +109,6 @@ class TitleEvalutor:
 
     # from GSBS: noun stacking, trouble words, conjunction count > 2, noun/adjective pairs
     # check if title includes an org name
-
-gi
         
 
 
