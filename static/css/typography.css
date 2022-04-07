@@ -11,16 +11,21 @@
 /* Header text styles */
 
 h1, h2, h3, h4, h3 a {
-    font-family: 'Oswald', sans-serif;
-    color: #76323f;
+    font-family: "Noto Sans VF", "Noto Sans", "Helvetica", "Arial", sans-serif;
+    color: #388557;
     margin: 0px;
     margin-bottom: 5px;
 }
 
+/* .post-container-title > h1, h2, h3, h4, h3 {
+    color: #fff;
+    transform: skew(30deg);
+} */
+
 h1 {text-transform: uppercase;}
 
 p,li,label {
-    font-family: 'Cabin', sans-serif;
+    font-family: "Noto Sans VF", "Noto Sans", "Helvetica", "Arial", sans-serif;
     color: #565656;
     margin: 0px;
     font-size: 18px;
@@ -44,4 +49,8 @@ blockquote p {
 .prettyprint.add-on li {
     font-family: Consolas, Monaco, 'Lucida Console','Courier New', Courier, monospace;
     font-size: 16px;
+}
+
+span.assessment-label {
+    font-weight: bolder;
 }

@@ -23,45 +23,42 @@ function updateAssessment(data){
     putDataHere.innerHTML = ''
 
     let pageTitle = document.createElement("P");
-    pageTitle.innerHTML = `<span>Page title: ${data['title']}<span/></span><br/><br/>`
+    pageTitle.innerHTML = `<span class="assessment-label">Your page's title:</span><span> ${data['title']}</span><hr/>`
+    putDataHere.appendChild(pageTitle)
 
     // TODO: if titleLength is fine, then don't say anything
     let titleLength = document.createElement("P");
-    titleLength.innerHTML = `<span>Title length: ${data['title_length']['length']} characters. ${data['title_length']['assessment']}</span><br/>`
+    titleLength.innerHTML = `<span class="assessment-label">Your title's length:</span><span> ${data['title_length']['length']} characters. ${data['title_length']['assessment']}</span><hr/>`
+    putDataHere.appendChild(titleLength)
+    
 
     let titleMatches = document.createElement("P");
-    titleMatches.innerHTML = `<span>Found ${data['title_matches']['total']} pages with similar names. ${data['title_matches']['assessment']}</span><br/>`
-
-    putDataHere.appendChild(pageTitle)
-    putDataHere.appendChild(document.createElement('HR'))
-    putDataHere.appendChild(titleLength)
-    putDataHere.appendChild(document.createElement('HR'))
-    
-    if (data['acronym_checker']['acronym_checker'] > 0) {
-        let acronym = document.createElement("P");
-        acronym.innerHTML =  `<span>${data['acronym_checker']['assessment']}</span><br/>`
-        putDataHere.appendChild(acronym)
-        putDataHere.appendChild(document.createElement('HR'))
-    }
-
+    titleMatches.innerHTML = `<span class="assessment-label">Found ${data['title_matches']['total']} pages with similar names.</span><span> ${data['title_matches']['assessment']}</span>`
     putDataHere.appendChild(titleMatches)
-
+    
     if (data['title_matches']['total'] > 0) {
         let similar_titles_list = document.createElement('UL');
         putDataHere.appendChild(similar_titles_list)
-        for (var key in data['title_matches']['title_matches']['paths']) {
+        for (var key in data['title_matches']['title_matches']) {
             console.log(key)
             let similar_title = document.createElement("LI");
-            console.log(data['title_matches']['title_matches']['paths'][key])
-            console.log(key)
-            similar_title.innerHTML = "<a href='https://" + data['title_matches']['title_matches']['paths'][key] + "'>" + key + "</a>"
+            similar_title.innerHTML = "<a href='https://" + data['title_matches']['title_matches'][key] + "'>" + key + "</a>"
             similar_titles_list.appendChild(similar_title)           
         }
+        putDataHere.appendChild(createElement('HR'))
+    } else {
+        putDataHere.appendChild(createElement('HR'))
     }
-    putDataHere.appendChild(document.createElement('HR'))
+
+    if (data['acronym_checker']['acronym_checker'] > 0) {
+        let acronym = document.createElement("P");
+        acronym.innerHTML =  `<span>${data['acronym_checker']['assessment']}</span><hr/>`
+        putDataHere.appendChild(acronym)
+    }
 
     if (data['trouble_words']['score'] > 0 ) {
         let trouble_words = document.createElement('P');
+        trouble_words.innerHTML = ''
     }
 
 

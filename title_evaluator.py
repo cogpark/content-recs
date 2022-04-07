@@ -1,3 +1,4 @@
+from os import remove
 from tabnanny import check
 import pandas as pd
 from fuzzywuzzy import fuzz
@@ -13,13 +14,12 @@ class TitleEvalutor:
         self.se = SentenceEvaluator()
         return
 
-    def evaluator(self, title, url):
-        print(title, ' ', url)
+    def evaluator(self, title, url, node_id):
         evaluation = {}
 
         evaluation['title'] = title
         evaluation['title_length'] = self.check_title_length(title)
-        evaluation['title_matches'] = self.get_title_matches(title, url)
+        evaluation['title_matches'] = self.get_title_matches(title, url, node_id)
         evaluation['acronym_checker'] = self.acronym_checker(title)
         evaluation['trouble_words'] = self.se.get_trouble_words(title)
         evaluation['conjunctions'] = self.se.count_conjunctions(title, is_title=True)
@@ -47,45 +47,38 @@ class TitleEvalutor:
         return title_length
 
     
-    def get_title_matches(self, title, url):
-
-
+    def get_title_matches(self, title, url, node_id):
         """
         Checks if the title is a close match for other titles on Mass.gov
         """
         if "https://" in url:
             url = url.replace("https://",'')
-        # TODO Also get links and return those too
-        titles_list = list(self.titles_df['title'])
+        # Remove the current page so we don't have to worry about returning it as a "match"
+        remove_submitted_page_df = self.titles_df[self.titles_df['node_id'] != node_id]
+
+        titles_list = list(remove_submitted_page_df['title'])
+        watched_titles = []
         title_matches = {}
 
         # Build a data structure that includes the titles and paths of pages that are similar to the submitted one.
         # We could also do the title as the key and the url as the value
-        similar_titles = {}
-        similar_titles['titles'] = {}
-        similar_titles['paths'] = {}
+        
 
         for item in titles_list:
-            if fuzz.ratio(title.lower(),item.lower()) > 75:
-                check_url = self.titles_df[self.titles_df['title'] == item]['node_path'].item()
-                check_url =  'www.mass.gov' + check_url
-                # Make sure the returned URL is not identical to the one the user entered. (We don't want to tell the user that their title is identical to their title)
-                if check_url != url:
-                    
-                    print(f'{check_url}, {url} ')
-               
-                    # Look up the page path based on the title in the titles dataframe
-                    similar_titles['titles'][item] = fuzz.ratio(title.lower(), item.lower())
-        
-                    similar_titles['paths'][item] = check_url
+            # compare all the titles to the current page's title. Only keep the ones that are matches of 75 or higher.
+            if fuzz.ratio(title.lower(),item.lower()) >= 75:
+                watched_titles.append(item)
 
-                
+        # filter the data down to just the similar pages
+        remove_submitted_page_df = remove_submitted_page_df[remove_submitted_page_df['title'].isin(watched_titles)]
+        just_title_path = remove_submitted_page_df[['title','node_path']]
+
+        similar_titles = dict(just_title_path.values)                
         
         #TODO Labor Market Information Statistics showed up once but then not again on subsequent searches for "labor market information" (the score is 81, and we changed the threshold from 70 to 75)
         #TODO maybe add stem match
 
-        title_matches['total'] = len(similar_titles['paths'].keys())
-        print(similar_titles)
+        title_matches['total'] = len(similar_titles.keys())
         
         if  title_matches['total'] < 1:
             title_matches['assessment'] = 'This title is unique among Mass.gov page titles.'

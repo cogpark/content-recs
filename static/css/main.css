@@ -10,11 +10,11 @@
 
 
 .bg {
-    background-color: #f7f1ef;
+    background-color: #f2f2f2;
 }
 
 .layout {
-    background-color: #C4B9AB;
+    background-color: #fff;
     width: 100%;
 }
 
@@ -37,7 +37,7 @@ nav .col {
 }
 
 #content {
-    background-color: #C4B9AB;
+    background-color: #fff;
     min-height: 700px;
 }
 
@@ -51,24 +51,36 @@ nav, footer {
 }
 
 .post-container {
-    background-color: #ffffff;
+    background-color: #fff;
     margin-top: 25px;
     margin-bottom: 25px;
     margin-right: auto;
     margin-left: auto;
     padding: 25px;
     border-radius: 12px;
-    border-color: #76323f;
+    border-color: #E7EEF4;
+    border-style:solid;
     max-width: 900px;
 }
 
 .post-container-title {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    margin-right: auto;
-    margin-left: auto;
-    border-radius: 12px;
-    max-width: 900px;
+    background-color: #14558f;
+    position: relative;
+    transform: skew(-30deg);
+    -ms-transform: skew(-30deg);
+    -webkit-transform: skew(-30deg);
+    display: block;
+    box-sizing: inherit;
+}
+
+.post-container-title::before {
+    content: "";
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 99%;
+    width: 50vw;
+    background-color: #14558f;
 }
 
 blockquote {

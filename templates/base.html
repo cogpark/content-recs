@@ -11,24 +11,34 @@
         <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin&display=swap" rel="stylesheet">
         <link href="https://unpkg.com/@massds/mayflower-assets@11.22.0/css/buttons.css" rel="stylesheet" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/@massds/mayflower-assets@11.22.0/css/header-slim.css" />
         <script type='text/javascript' src="{{ url_for('static', filename='js/handle_submit.js') }}" ></script>
     </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg bg">
-        <div class='container'>
-            <div class='row'> 
-                <div class='col'>
-                </div>
-                <div class='col'>
-                    <a href='/'>This would be a menu item 1</a>
-                </div>
-                <div class='col'>
-                    <a href='/'>Item 2</a>
-                </div>
-            </div>
+    <div class="ma__header_slim">
+        <div class="ma__header_slim__utility">
+          <div class="ma__header_slim__utility-container ma__container"></div>
         </div>
-    </nav>
+        <header class="ma__header_slim__header" id="header">
+          <div class="ma__header_slim__header-container ma__container">
+            <div class="ma__header_slim__logo">
+              <div class="ma__site-logo">
+                <a href="https://www.mass.gov/" title="Mass.gov homepage">
+                  <img
+                    class="ma__image"
+                    src="https://unpkg.com/@massds/mayflower-assets@11.22.0/static/images/logo/stateseal.png"
+                    alt="Massachusetts state seal"
+                    width="45"
+                    height="45"
+                  />
+                  <span>MOCKUP: Improve your content</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
+     
 
     <div class='layout'>
         <div class='container' id="content">
@@ -43,7 +53,7 @@
     </div>
     <footer class="navbar bg">
         <div class='container'>
-            <p style="margin-left:auto; margin-right: auto;">Content recommendations   |    © 2022 Adam Cogbill & Marino Fernandes. All rights reserved. </p>
+            <p style="margin-left:auto; margin-right: auto;">Content recommendations   |    © 2022 Adam Cogbill & Marino Fernandes. </p>
         </div> 
     </footer>
 </body>

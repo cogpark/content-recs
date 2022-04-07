@@ -17,12 +17,13 @@ def get_title_recs(url):
     print(f'URL as entered by user: {url}')
 
     ws = WebScraper()
-    title = ws.get_title(url)
+    title, node_id = ws.get_title(url)
 
     print(f'Title returned: {title}')
+    print(f'Node ID returned: {node_id}')
 
     te = TitleEvalutor()
-    evaluation = te.evaluator(title, url)
+    evaluation = te.evaluator(title, url, node_id)
     print(evaluation)
 
     return jsonify(evaluation)

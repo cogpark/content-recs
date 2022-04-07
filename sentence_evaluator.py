@@ -152,10 +152,15 @@ class SentenceEvaluator:
         """
         trouble_words = {}
         sentence = sentence.lower()
+        
+        # prevents us from having to look for both and + &, though we may need to change it back if it's confusing to users
+        # for example, if i tell you your content has "rules and regulations" but you have "rules & regulations," you
+        # might be irritated?
+        sentence = sentence.replace('&','and')
         points = 2
         score = 0
         
-        look_for_these_phrases = ['rules and regulation', 'necessary and required','details and information','in your possession' ]
+        look_for_these_phrases = ['rules and regulation', 'laws and regulations', 'necessary and required','details and information','in your possession' ]
 
         for phrase in look_for_these_phrases:
 

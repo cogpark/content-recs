@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 class WebScraper:
     
@@ -21,8 +22,17 @@ class WebScraper:
         # All Mass.gov title tags have | Mass.gov on them
         if "|" in title:
             title = title.split('|')[0].strip()
+
+      
+        # Get node ID so we can get around the problem of duplicate titles. First, find the dataLayer object
+        script_text = str(soupContent.find("script", text=re.compile("entityIdentifier")))
+        print(script_text)
+
         
-        return title
+
+        node_id = re.search('"entityIdentifier":"[0-9]*"', script_text)[0]
+        node_id = ''.join([i for i in node_id if i in ['1','2','3','4','5','6','7','8','9','0']])        
+        return title, int(node_id)
 
 
 if __name__ == "__main__":
