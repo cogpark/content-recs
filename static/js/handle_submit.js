@@ -45,9 +45,9 @@ function updateAssessment(data){
             similar_title.innerHTML = "<a href='https://" + data['title_matches']['title_matches'][key] + "'>" + key + "</a>"
             similar_titles_list.appendChild(similar_title)           
         }
-        putDataHere.appendChild(createElement('HR'))
+        putDataHere.appendChild(document.createElement('HR'))
     } else {
-        putDataHere.appendChild(createElement('HR'))
+        putDataHere.appendChild(document.createElement('HR'))
     }
 
     if (data['acronym_checker']['acronym_checker'] > 0) {
@@ -57,8 +57,23 @@ function updateAssessment(data){
     }
 
     if (data['trouble_words']['score'] > 0 ) {
-        let trouble_words = document.createElement('P');
+        let trouble_words_title = document.createElement("P");
+        trouble_words_title.innerHTML = `<span class="assessment-label">Found the following phrases that could be replaced with simpler alternatives:</span>`
+        // ${data['trouble_words']['score'] / 2} would be the number found
+        putDataHere.appendChild(trouble_words_title)
+
+        let trouble_words = document.createElement('UL');
         trouble_words.innerHTML = ''
+        putDataHere.appendChild(trouble_words)
+        for (var item in data['trouble_words']['flagged']) {
+            console.log(data['trouble_words']['flagged'][item])
+            let flagged_phrase = document.createElement("LI");
+            flagged_phrase.innerHTML = data['trouble_words']['flagged'][item]
+            trouble_words.appendChild(flagged_phrase)           
+        }
+        putDataHere.appendChild(document.createElement('HR'))
+    } else {
+      //  putDataHere.appendChild(document.createElement('HR'))
     }
 
 

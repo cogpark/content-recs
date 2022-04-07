@@ -151,6 +151,7 @@ class SentenceEvaluator:
         Returns a list whose first entry is the the score and second the number of trouble words/phrases found.
         """
         trouble_words = {}
+        flagged_phrases = []
         sentence = sentence.lower()
         
         # prevents us from having to look for both and + &, though we may need to change it back if it's confusing to users
@@ -166,7 +167,7 @@ class SentenceEvaluator:
 
             if phrase in sentence:
                 score = score + points 
-                trouble_words[f'{phrase}'] = True
+                flagged_phrases.append(phrase)
             if print_reasons:
                 print(f'Score after looking for "{phrase}": {score}')
 
@@ -176,14 +177,14 @@ class SentenceEvaluator:
             match = re.search('(have|has) the (capacity|capability|ability)', sentence)
             score = score + points
             # This gets us the phrase that the regex search caught
-            trouble_words[f'{sentence[match.span()[0]: match.span()[1]]}']  = True
+            flagged_phrases.append(sentence[match.span()[0]: match.span()[1]])
         if print_reasons:
             print(f'Score after looking for "have the ability/capacity/capability": {score}')
         
         if re.search('utiliz', sentence):
             match = re.search('utiliz', sentence)
             score = score + points 
-            trouble_words[f'{sentence[match.span()[0]: match.span()[1]]}'] = True
+            flagged_phrases.append(sentence[match.span()[0]: match.span()[1]])
         if print_reasons:
             print(f'Score after looking for "utilize (and variants)": {score}')
 
@@ -191,18 +192,19 @@ class SentenceEvaluator:
         if re.search('(manage[a-z]*) and (operat[a-z]*)', sentence):
             match = re.search('(manage[a-z]*) and (operat[a-z]*)', sentence)
             score = score + points
-            trouble_words[f'{sentence[match.span()[0]: match.span()[1]]}'] = True
+            flagged_phrases.append(sentence[match.span()[0]: match.span()[1]])
         if print_reasons:
             print(f'Score after looking for "manage and operate": {score}')
 
         if re.search('(across|throughout) the commonwealth', sentence):
             match = re.search('(across|throughout) the commonwealth', sentence)
             score = score + points
-            trouble_words[f'{sentence[match.span()[0]: match.span()[1]]}'] = True
+            flagged_phrases.append(sentence[match.span()[0]: match.span()[1]])
         if print_reasons:
             print(f'Score after looking for "across the commonwealth": {score}')
 
         trouble_words['score'] = score
+        trouble_words['flagged'] = flagged_phrases
 
         return trouble_words
 
