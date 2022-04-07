@@ -49,9 +49,12 @@ function updateAssessment(data){
     if (data['title_matches']['total'] > 0) {
         let similar_titles_list = document.createElement('UL');
         putDataHere.appendChild(similar_titles_list)
-        for (var key in data['title_matches']['title_matches']) {
+        for (var key in data['title_matches']['title_matches']['paths']) {
+            console.log(key)
             let similar_title = document.createElement("LI");
-            similar_title.innerHTML = key
+            console.log(data['title_matches']['title_matches']['paths'][key])
+            console.log(key)
+            similar_title.innerHTML = "<a href='https://" + data['title_matches']['title_matches']['paths'][key] + "'>" + key + "</a>"
             similar_titles_list.appendChild(similar_title)           
         }
     }

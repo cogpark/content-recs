@@ -1,3 +1,4 @@
+from asyncio import current_task
 from nltk import word_tokenize, pos_tag
 import re
 from collections import Counter 
@@ -397,35 +398,39 @@ class SentenceEvaluator:
 
     def stacked_nouns(self, sentence, print_reasons=False):
         """
-        Counts how often sentences include constructions composed of
-        many nouns in a row. Scores 2 if it finds 1 stack of nouns, 
-        4 if it contains more than 1 stack, else 0.
+        Counts how often sentences include constructions composed of 4 nouns in a row.
 
         """
+        # A dictionary to keep track of all noun stacks
+        stacks = {} 
+        
+        # A list to store the current stack of nouns in
+        current_stack = []
 
-        fingerprint = ''
-        
         identify_pos = pos_tag(sentence.split())
-        print(identify_pos)
-        for i in range(len(identify_pos)):
-           
-            if identify_pos[i][1] in ['NN', 'NNP', 'NNS', 'VBG', 'VBN']:
-                fingerprint = fingerprint + 'N,'
-            else:
-                fingerprint = fingerprint  + identify_pos[i][1] + ','
+
+        identify_pos.append(('Add an item', 'so we don\'t end on a noun (see the logic "else" below)'))
+
         if print_reasons:
-            print(fingerprint)
-        # print(fingerprint)
-        stack_count = fingerprint.count('N,N,N,N')
-        
-        if stack_count == 0:
-            score = 0
-        elif stack_count == 1:
-            score = 2
-        else:
-            score = 4 
-        
-        return [score, stack_count]
+            print(identify_pos)
+
+        for i in range(len(identify_pos)):
+            if print_reasons:
+                print(i, ' ', current_stack)
+            if identify_pos[i][1] in ['NN', 'NNP', 'NNS', 'VBG', 'VBN']:
+                # if we see a noun (or a word acting as one), start tracking a stack
+                current_stack.append(identify_pos[i][0])
+            else:
+                # Now that the stack is no longer accumulating, we check how big it is
+                if len(current_stack) >= 4:
+                    # It's greater than 4, so track it in our dictionary
+                    stacks[len(stacks)] = ' '.join(current_stack)
+                    print(stacks)
+                    current_stack = []
+                # Reset the counter
+                current_stack = []
+
+        return stacks
 
     def long_introductory_clause(self, sentence, print_reasons=False):
         """
@@ -461,3 +466,9 @@ class SentenceEvaluator:
         
         return [score, len(intro_clause)]
     
+
+if __name__=="__main__":
+    se = SentenceEvaluator()
+    
+    x = se.stacked_nouns("finger hand computer coffee cup", print_reasons=True)
+    print(x)

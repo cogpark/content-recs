@@ -1,3 +1,4 @@
+from tabnanny import check
 import pandas as pd
 from fuzzywuzzy import fuzz
 from sentence_evaluator import SentenceEvaluator
@@ -12,15 +13,17 @@ class TitleEvalutor:
         self.se = SentenceEvaluator()
         return
 
-    def evaluator(self, title):
+    def evaluator(self, title, url):
+        print(title, ' ', url)
         evaluation = {}
 
         evaluation['title'] = title
         evaluation['title_length'] = self.check_title_length(title)
-        evaluation['title_matches'] = self.get_title_matches(title)
+        evaluation['title_matches'] = self.get_title_matches(title, url)
         evaluation['acronym_checker'] = self.acronym_checker(title)
         evaluation['trouble_words'] = self.se.get_trouble_words(title)
         evaluation['conjunctions'] = self.se.count_conjunctions(title, is_title=True)
+        evaluation['noun_stacking'] = self.se.stacked_nouns(title)
 
         return evaluation
 
@@ -44,26 +47,44 @@ class TitleEvalutor:
         return title_length
 
     
-    def get_title_matches(self, title):
+    def get_title_matches(self, title, url):
+
+
         """
         Checks if the title is a close match for other titles on Mass.gov
         """
+        if "https://" in url:
+            url = url.replace("https://",'')
         # TODO Also get links and return those too
         titles_list = list(self.titles_df['title'])
         title_matches = {}
+
+        # Build a data structure that includes the titles and paths of pages that are similar to the submitted one.
+        # We could also do the title as the key and the url as the value
         similar_titles = {}
+        similar_titles['titles'] = {}
+        similar_titles['paths'] = {}
 
         for item in titles_list:
-            if fuzz.ratio(title,item) > 75:
-                similar_titles[item] = fuzz.ratio(title.lower(), item.lower())
-                # This incredibly confusing line looks up the page path based on the title in the titles dataframe and assigns it to the similar titles dictionary under the key "title" + "_path." 
-                similar_titles[item + '_path'] = 'www.mass.gov' + self.titles_df[self.titles_df['title'] == item]['node_path'].item()
+            if fuzz.ratio(title.lower(),item.lower()) > 75:
+                check_url = self.titles_df[self.titles_df['title'] == item]['node_path'].item()
+                check_url =  'www.mass.gov' + check_url
+                # Make sure the returned URL is not identical to the one the user entered. (We don't want to tell the user that their title is identical to their title)
+                if check_url != url:
+                    
+                    print(f'{check_url}, {url} ')
+               
+                    # Look up the page path based on the title in the titles dataframe
+                    similar_titles['titles'][item] = fuzz.ratio(title.lower(), item.lower())
+        
+                    similar_titles['paths'][item] = check_url
+
                 
         
         #TODO Labor Market Information Statistics showed up once but then not again on subsequent searches for "labor market information" (the score is 81, and we changed the threshold from 70 to 75)
         #TODO maybe add stem match
 
-        title_matches['total'] = len(similar_titles.keys())
+        title_matches['total'] = len(similar_titles['paths'].keys())
         print(similar_titles)
         
         if  title_matches['total'] < 1:
@@ -119,7 +140,7 @@ class TitleEvalutor:
 if __name__ == "__main__":
     tf = TitleEvalutor()
     
-    x = tf.evaluator("you and me and us make three as well as")
+    x = tf.evaluator("you and me and us make three as well as coffee cup mug mug", "www.com.")
     print(x)
 
     

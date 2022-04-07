@@ -22,7 +22,7 @@ def get_title_recs(url):
     print(f'Title returned: {title}')
 
     te = TitleEvalutor()
-    evaluation = te.evaluator(title)
+    evaluation = te.evaluator(title, url)
     print(evaluation)
 
     return jsonify(evaluation)
